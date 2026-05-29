@@ -1,0 +1,12 @@
+[server]
+maxUploadSize = 15360
+
+[global]
+developmentMode = false
+
+[client]
+showErrorDetails = false
+toolbarMode = "minimal"
+
+[browser]
+gatherUsageStats = false

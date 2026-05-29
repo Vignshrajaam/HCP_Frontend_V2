@@ -1,0 +1,78 @@
+/* ── Force collapsed sidebar toggle to always show ── */
+/* ── Hide Streamlit's auto-generated page nav ── */
+[data-testid="stSidebarNav"] {
+    display: none !important;
+}
+
+[data-testid="collapsedControl"] {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: all !important;
+    z-index: 999999 !important;
+}
+
+[data-testid="collapsedControl"] button {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: all !important;
+}
+
+/* ── Score box ── */
+.score-box {
+    text-align: center;
+    padding: 2rem;
+    border-radius: 12px;
+    border: 1px solid #e9ecef;
+}
+
+.score-number {
+    font-size: 56px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.score-label {
+    font-size: 14px;
+    color: #6c757d;
+    margin-top: 6px;
+}
+
+.upload-status-box {
+    min-height: 56px;
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 13px;
+    line-height: 1.5;
+    box-sizing: border-box;
+}
+
+/* ── Disable ONLY the fullscreen button on sidebar images ── */
+/* Hide the fullscreen button but keep the image visible */
+[data-testid="stSidebar"] button[kind="fullscreen"] {
+    display: none !important;
+}
+
+[data-testid="stSidebar"] button[aria-label="Fullscreen"] {
+    display: none !important;
+}
+
+[data-testid="stSidebar"] [data-testid="stImage"] button {
+    display: none !important;
+}
+
+[data-testid="stSidebar"] .stImage button {
+    display: none !important;
+}
+
+/* Make sure the image itself remains visible */
+[data-testid="stSidebar"] [data-testid="stImage"] {
+    display: block !important;
+    visibility: visible !important;
+}
+
+[data-testid="stSidebar"] img {
+    display: block !important;
+    visibility: visible !important;
+}
