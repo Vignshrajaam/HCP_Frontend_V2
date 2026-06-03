@@ -216,19 +216,19 @@ def render_sidebar():
             label="4 · Namespace insights"
         )
 
-        st.page_link(
-            "pages/5_Node_planning.py",
-            label="5 · Node Addition Planning"
-        )
+        # st.page_link(
+        #     "pages/5_Node_planning.py",
+        #     label="5 · Node Addition Planning"
+        # )
 
         st.page_link(
             "pages/6_Query_engine.py",
-            label="6 · Query engine"
+            label="5 · Query engine"
         )
 
         st.page_link(
             "pages/7_Access_log_analysis.py",
-            label="7 · Access log analysis"
+            label="6 · Access log analysis"
         )
 
         st.divider()
