@@ -180,7 +180,7 @@ def render_sidebar():
             'HCP SmartAnalytics'
             '</span><br>'
             '<span style="font-size:12px;color:#888;">'
-            'v2.0 — NewGen'
+            'V2.0'
             '</span>'
             '</div>',
             unsafe_allow_html=True,

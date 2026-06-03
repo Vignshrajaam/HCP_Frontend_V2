@@ -301,3 +301,335 @@ with tabs[0]:
     ip_writes = safe_df(ins.top_ips_writes)
     bar_chart(ip_writes, "requests", "ip", "Top IPs — Writes", color="#ff6b6b", horizontal=True)
     show_df(ip_writes)
+    #  # Export
+    # st.divider()
+    # buf = io.BytesIO(); df.head(5000).to_csv(buf, index=False)
+    # st.download_button("Export log sample CSV (5 000 rows)", buf.getvalue(),
+    #                    file_name=f"access_log_{cname}.csv", mime="text/csv")
+
+# ════════════════════════════════════════════════════
+# TAB 2 · TIMELINE (SINGLE COLUMN)
+# ════════════════════════════════════════════════════
+with tabs[1]:
+    st.subheader("Timeline insights")
+    
+    st.markdown("**Requests per day**")
+    rpd = safe_df(ins.requests_per_day)
+    line_chart(rpd, "day", "requests", "Requests Per Day")
+    show_df(rpd)
+    
+    st.divider()
+    
+    st.markdown("**Requests per hour**")
+    rph = safe_df(ins.requests_per_hour)
+    line_chart(rph, "hour", "requests", "Requests Per Hour", color="#2f9e44")
+    show_df(rph)
+    
+    st.divider()
+    
+    st.markdown("**Errors over time**")
+    eot = safe_df(ins.errors_over_time)
+    line_chart(eot, "hour", "errors", "Errors Over Time", color="#e03131")
+    show_df(eot)
+    
+    st.divider()
+    
+    st.markdown("**4xx errors over time**")
+    e4 = safe_df(ins.errors_4xx_over_time)
+    line_chart(e4, "hour", "errors", "4xx Errors Over Time", color="#f59f00")
+    show_df(e4)
+    
+    st.divider()
+    
+    st.markdown("**5xx errors over time**")
+    e5 = safe_df(ins.errors_5xx_over_time)
+    line_chart(e5, "hour", "errors", "5xx Errors Over Time", color="#e03131")
+    show_df(e5)
+    
+    st.divider()
+    
+    st.markdown("**S3 activity over time**")
+    s3 = safe_df(ins.s3_activity_over_time)
+    line_chart(s3, "hour", "s3_requests", "S3 Activity Over Time", color="#1971c2")
+    show_df(s3)
+    
+    st.divider()
+    
+    st.markdown("**REST activity over time**")
+    rest = safe_df(ins.rest_activity_over_time)
+    line_chart(rest, "hour", "rest_requests", "REST Activity Over Time", color="#5c7cfa")
+    show_df(rest)
+    
+    st.divider()
+    
+    st.markdown("**DELETE activity over time**")
+    da = safe_df(ins.delete_activity_over_time)
+    line_chart(da, "hour", "requests", "DELETE Activity Over Time", color="#e03131")
+    show_df(da)
+    
+    st.divider()
+    
+    st.markdown("**PUT activity over time**")
+    pa = safe_df(ins.put_activity_over_time)
+    line_chart(pa, "hour", "requests", "PUT Activity Over Time", color="#f59f00")
+    show_df(pa)
+    
+    st.divider()
+    
+    st.markdown("**Average response time over time**")
+    art = safe_df(ins.average_resptime_over_time)
+    line_chart(art, "hour", "avg_resptime", "Average Response Time (ms) Over Time", color="#ae3ec9")
+    show_df(art)
+    
+    st.divider()
+    
+    st.markdown("**After-hours activity** (requests by hour of day)")
+    aha = safe_df(ins.after_hours_activity)
+    bar_chart(aha, "hour_of_day", "requests", "After-Hours Activity (Hour of Day)", color="#f59f00")
+    show_df(aha)
+    
+    st.divider()
+    
+    st.markdown("**Requests per node over time**")
+    rpn = safe_df(ins.requests_per_node_over_time)
+    multi_line_chart(rpn, "hour", "requests", "node", "Requests Per Node Over Time")
+    show_df(rpn)
+    
+    st.divider()
+    
+    st.markdown("**Tenant activity over time**")
+    tat = safe_df(ins.tenant_activity_over_time)
+    stacked_area_chart(tat, "hour", "requests", "tenant", "Tenant Activity Over Time")
+    show_df(tat)
+    
+    st.divider()
+    
+    st.markdown("**Namespace activity over time**")
+    nat = safe_df(ins.namespace_activity_over_time)
+    stacked_area_chart(nat, "hour", "requests", "namespace", "Namespace Activity Over Time")
+    show_df(nat)
+
+# ════════════════════════════════════════════════════
+# TAB 3 · ERRORS (SINGLE COLUMN)
+# ════════════════════════════════════════════════════
+with tabs[2]:
+    st.subheader("Error analysis")
+    
+    st.markdown("**Top failed paths**")
+    fp = safe_df(ins.get_top_failed_paths)
+    bar_chart(fp, "failures", "path", "Top Failed Paths", color="#e03131", horizontal=True)
+    show_df(fp)
+    
+    st.divider()
+    
+    st.markdown("**Top failed tenants**")
+    ft = safe_df(ins.get_top_failed_tenants)
+    bar_chart(ft, "failures", "tenant", "Top Failed Tenants", color="#f59f00", horizontal=True)
+    show_df(ft)
+    
+    st.divider()
+    
+    st.markdown("**Error rate by tenant**")
+    ert = safe_df(ins.error_rate_by_tenant)
+    show_df(ert)
+    
+    st.divider()
+    
+    st.markdown("**Top failing IPs**")
+    fi = safe_df(ins.get_top_failed_ips)
+    bar_chart(fi, "failures", "ip", "Top Failing IPs", color="#ff6b6b", horizontal=True)
+    show_df(fi)
+    
+    st.divider()
+    
+    st.markdown("**Top 404 objects**")
+    o404 = safe_df(ins.top_404_objects)
+    show_df(o404)
+    
+    st.divider()
+    
+    st.markdown("**Failure percentage**")
+    fpc = safe_df(ins.failure_percentage)
+    show_df(fpc)
+    
+    st.divider()
+    
+    st.markdown("**4xx errors (latest 100)**")
+    show_df(safe_df(ins.get_4xx_errors))
+    
+    st.divider()
+    
+    st.markdown("**5xx errors (latest 100)**")
+    show_df(safe_df(ins.get_5xx_errors))
+
+# ════════════════════════════════════════════════════
+# TAB 4 · SECURITY (SINGLE COLUMN)
+# ════════════════════════════════════════════════════
+with tabs[3]:
+    st.subheader("Security insights")
+    
+    st.markdown("**High 403 activity (users)**")
+    h403 = safe_df(ins.get_high_403_activity)
+    bar_chart(h403, "failures", "user", "High 403 Activity by User", color="#e03131", horizontal=True)
+    show_df(h403)
+    
+    st.divider()
+    
+    st.markdown("**Top 403 users**")
+    u403 = safe_df(ins.top_403_users)
+    show_df(u403)
+    
+    st.divider()
+    
+    st.markdown("**Suspicious IPs** (≥100 failures)")
+    susp = safe_df(ins.get_suspicious_ips)
+    if not susp.empty:
+        for _, row in susp.iterrows():
+            st.markdown(
+                f'<div class="anomaly-box">🔴 <strong>{row.get("ip","—")}</strong> — '
+                f'{row.get("failures","?")} failed requests</div>',
+                unsafe_allow_html=True)
+    else:
+        st.markdown('<div class="ok-box">✅ No suspicious IPs detected</div>', unsafe_allow_html=True)
+    
+    st.divider()
+    
+    st.markdown("**Failed login patterns**")
+    flp = safe_df(ins.get_failed_login_patterns)
+    show_df(flp)
+    
+    st.divider()
+    
+    st.markdown("**Anonymous access (latest 100)**")
+    show_df(safe_df(ins.get_anonymous_access))
+    
+    st.divider()
+    
+    st.markdown("**Large uploads (≥100 MB)**")
+    lu = safe_df(ins.get_large_uploads)
+    show_df(lu)
+    
+    st.divider()
+    
+    st.markdown("**Delete operations (latest 100)**")
+    show_df(safe_df(ins.get_delete_operations))
+    
+    st.divider()
+    
+    st.markdown("**Deletes by tenant**")
+    dbt = safe_df(ins.get_delete_by_tenant)
+    bar_chart(dbt, "deletes", "tenant", "Deletes by Tenant", color="#e03131", horizontal=True)
+    show_df(dbt)
+    
+    st.divider()
+    
+    st.markdown("**Deletes by user**")
+    dbu = safe_df(ins.get_delete_by_user)
+    bar_chart(dbu, "deletes", "user", "Deletes by User", color="#f59f00", horizontal=True)
+    show_df(dbu)
+
+# ════════════════════════════════════════════════════
+# TAB 5 · PERFORMANCE (SINGLE COLUMN)
+# ════════════════════════════════════════════════════
+with tabs[4]:
+    st.subheader("Performance insights")
+    
+    avg_rt = safe_df(ins.get_average_response_time)
+    if not avg_rt.empty:
+        val = avg_rt.iloc[0]["value"]
+        st.metric("Average response time (ms)", f"{val:,.1f}")
+    
+    st.divider()
+    
+    st.markdown("**Slowest requests (top 100)**")
+    show_df(safe_df(ins.get_slowest_requests))
+    
+    st.divider()
+    
+    st.markdown("**High latency paths (avg)**")
+    hlp = safe_df(ins.get_high_latency_paths)
+    bar_chart(hlp, "avg_resptime", "path", "High Latency Paths (avg ms)", color="#ae3ec9", horizontal=True)
+    show_df(hlp)
+    
+    st.divider()
+    
+    st.markdown("**High latency nodes**")
+    hln = safe_df(ins.get_high_latency_nodes)
+    bar_chart(hln, "avg_resptime", "node", "High Latency Nodes (avg ms)", color="#e64980", horizontal=True)
+    show_df(hln)
+    
+    st.divider()
+    
+    st.markdown("**High latency tenants (avg)**")
+    hlt = safe_df(ins.get_high_latency_tenants)
+    bar_chart(hlt, "avg_resptime", "tenant", "High Latency Tenants (avg ms)", color="#f59f00", horizontal=True)
+    show_df(hlt)
+    
+    st.divider()
+    
+    st.markdown("**High request volume nodes**")
+    hrn = safe_df(ins.get_high_requests_nodes)
+    bar_chart(hrn, "requests", "node", "High Request Volume Nodes", color="#2f9e44", horizontal=True)
+    show_df(hrn)
+    
+    st.divider()
+    
+    st.markdown("**Slow PUTs**")
+    show_df(safe_df(ins.slow_puts))
+    
+    st.divider()
+    
+    st.markdown("**Slow GETs**")
+    show_df(safe_df(ins.slow_gets))
+
+# ════════════════════════════════════════════════════
+# TAB 6 · ANOMALIES (SINGLE COLUMN)
+# ════════════════════════════════════════════════════
+with tabs[5]:
+    st.subheader("Anomaly detection")
+    st.caption("Spikes detected using a 3× standard-deviation threshold above the hourly mean.")
+
+    ANOMALIES = [
+        ("DELETE spikes",         anom.detect_delete_spikes,   "hour",  "requests",    "DELETE Spikes per Hour",            "#e03131"),
+        ("Response time spikes",  anom.detect_resptime_spikes, "hour",  "avg_resptime","Response Time Spikes (avg ms/hour)", "#ae3ec9"),
+        ("403 burst detection",    anom.detect_403_bursts,      "hour",  "requests",    "403 Bursts per Hour",                "#f59f00"),
+        ("REST flood detection",   anom.detect_rest_floods,     "hour",  "requests",    "REST Floods per Hour",               "#1971c2"),
+        ("Tenant activity spikes", anom.detect_tenant_spikes,   None,    None,           "Tenant Spikes",                     None),
+    ]
+
+    for title, fn, x, y, chart_title, color in ANOMALIES:
+        st.markdown(f"**{title}**")
+        result = safe_df(fn)
+        if not result.empty:
+            st.markdown(
+                f'<div class="anomaly-box">⚠️ {len(result)} anomalous period(s) detected</div>',
+                unsafe_allow_html=True)
+            if x and y and color:
+                line_chart(result, x, y, chart_title, color=color)
+            show_df(result)
+        else:
+            st.markdown('<div class="ok-box">✅ No anomalies detected</div>', unsafe_allow_html=True)
+        st.divider()
+
+    # ── investigation drill-down ──────────────────────
+    st.subheader("Investigation drill-down")
+    st.caption("Trace activity by IP, user, namespace, or object path.")
+
+    inv_type = st.selectbox("Trace by", ["IP", "User", "Namespace", "Object path"])
+    inv_val  = st.text_input(f"Enter {inv_type} value", placeholder="e.g. 10.0.0.5")
+    if st.button("▶ Trace", type="primary") and inv_val.strip():
+        try:
+            if   inv_type == "IP":          result = ins.trace_ip_activity(inv_val)
+            elif inv_type == "User":        result = ins.trace_user_activity(inv_val)
+            elif inv_type == "Namespace":   result = ins.trace_namespace_activity(inv_val)
+            else:                           result = ins.trace_object_activity(inv_val)
+            if result is not None and not result.empty:
+                st.success(f"{len(result):,} records matched")
+                show_df(result)
+                buf2 = io.BytesIO(); result.to_csv(buf2, index=False)
+                st.download_button("📥 Export CSV", buf2.getvalue(),
+                                   file_name=f"trace_{inv_type.lower()}_{inv_val}.csv", mime="text/csv")
+            else:
+                st.info("No records found for that value.")
+        except Exception as e:
+            st.error(f"Error: {e}")
