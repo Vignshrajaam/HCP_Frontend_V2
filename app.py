@@ -28,9 +28,8 @@ if "data" not in st.session_state:
 | **2 · Config insights** | Health-check findings + HCP score |
 | **3 · Tenants & namespaces** | Filterable tables, CSV export |
 | **4 · Namespace insights** | Risk assessment & classification |
-| **5 · Node planning** | Tech refresh & node addition wizard |
-| **6 · Query engine** | Namespace query with custom filters |
-| **7 · Access log analysis** | Traffic, errors, security, anomalies |
+| **5 · Query engine** | Namespace query with custom filters |
+| **6 · Access log analysis** | Traffic, errors, security, anomalies |
 """)
 
 else:
@@ -77,3 +76,6 @@ else:
         fw.metric("Warnings",       sum(1 for f in findings if f.get("severity") == "WARNING"))
         fp.metric("Info / healthy", sum(1 for f in findings if f.get("severity") in ("INFO", "HEALTHY")))
         st.caption("Use the sidebar to navigate to any analysis page.")
+
+
+#5 · Node planning** | Tech refresh & node addition wizard
