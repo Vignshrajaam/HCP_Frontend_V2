@@ -576,12 +576,12 @@ with tabs[2]:
     
     # In tabs[2] (Errors tab), after the "Top failing IPs" block:
 
-st.divider()
+    st.divider()
 
-st.markdown("**Top users with 403 errors**")
-u403 = safe_df(ins.top_403_users)
-bar_chart(u403, "403_count", "user", "Top Users with 403 Errors", color="#e03131", horizontal=True)
-show_df(u403)
+    st.markdown("**Top users with 403 errors**")
+    u403 = safe_df(ins.top_403_users)
+    bar_chart(u403, "403_count", "user", "Top Users with 403 Errors", color="#e03131", horizontal=True)
+    show_df(u403)
 
 # ════════════════════════════════════════════════════
 # TAB 4 · SECURITY (SINGLE COLUMN)
