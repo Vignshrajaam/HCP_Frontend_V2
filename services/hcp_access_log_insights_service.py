@@ -2669,11 +2669,9 @@
 #             .head(limit)
 
 #             .reset_index(
-
 #                 drop=True
 #             )
 #         )
-
 import pandas as pd
 
 

@@ -22,7 +22,7 @@ st.title("HCP SmartAnalytics")
 if "data" not in st.session_state:
     st.markdown("Upload your HCP diagnostic ZIP on the left to get started.")
     st.markdown("""
-| Page | Contents |
+| Slides | Contents |
 |---|---|
 | **1 · Cluster summary** | Nodes, network, security, storage |
 | **2 · Config insights** | Health-check findings + HCP score |

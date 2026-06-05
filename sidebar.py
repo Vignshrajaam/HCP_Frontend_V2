@@ -560,9 +560,17 @@ def render_sidebar():
                         </div>
                     </div>
                 </span>
-                <br>
-                <span style="font-size:10px;color:#aaa;">&copy; 2026 Hitachi Vantara LLC</span>
-            </div>
+               </div>
+            <div style="
+                position: fixed;
+                bottom: 1rem;
+                left: 0;
+                width: 244px;
+                text-align: center;
+                font-size: 12px;
+                color: #aaa;
+                pointer-events: none;
+            ">&copy; 2026 Hitachi Vantara LLC</div>
             """,
             unsafe_allow_html=True,
         )

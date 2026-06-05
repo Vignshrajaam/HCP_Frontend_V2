@@ -4,6 +4,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+import plotly.graph_objects as go 
 import io
 import sys
 from pathlib import Path
@@ -222,7 +223,7 @@ with tabs[0]:
     # Top client IPs
     st.markdown("**Top client IPs**")
     top_ips = safe_df(ins.top_ips)
-    bar_chart(top_ips, "requests", "ip", "Top Client IPs", horizontal=True)
+    bar_chart(top_ips, "count", "requests", "Top Client IPs", horizontal=True)
     show_df(top_ips)
     
     st.divider()
@@ -230,7 +231,7 @@ with tabs[0]:
     # Top tenants
     st.markdown("**Top tenants**")
     top_tenants = safe_df(ins.top_tenants)
-    bar_chart(top_tenants, "requests", "tenant", "Top Tenants", color="#74c0fc", horizontal=True)
+    bar_chart(top_tenants, "tenant", "requests", "Top Tenants", color="#74c0fc", horizontal=True)
     show_df(top_tenants)
     
     st.divider()
@@ -238,7 +239,7 @@ with tabs[0]:
     # HTTP methods
     st.markdown("**HTTP methods**")
     top_methods = safe_df(ins.top_methods)
-    bar_chart(top_methods, "method", "requests", "HTTP Methods", color="#a9e34b")
+    bar_chart(top_methods, "requests", "method", "HTTP Methods", color="#a9e34b")
     show_df(top_methods)
     
     st.divider()
@@ -253,7 +254,7 @@ with tabs[0]:
     # Top users
     st.markdown("**Top users**")
     top_users = safe_df(ins.top_users)
-    bar_chart(top_users, "requests", "user", "Top Users", color="#ffa94d", horizontal=True)
+    bar_chart(top_users, "users", "requests", "Top Users", color="#ffa94d", horizontal=True)
     show_df(top_users)
     
     st.divider()
@@ -261,7 +262,7 @@ with tabs[0]:
     # Top namespaces
     st.markdown("**Top namespaces**")
     top_ns = safe_df(ins.top_namespaces)
-    bar_chart(top_ns, "requests", "namespace", "Top Namespaces", color="#f783ac", horizontal=True)
+    bar_chart(top_ns, "namespace", "requests", "Top Namespaces", color="#f783ac", horizontal=True)
     show_df(top_ns)
     
     st.divider()
@@ -301,6 +302,29 @@ with tabs[0]:
     ip_writes = safe_df(ins.top_ips_writes)
     bar_chart(ip_writes, "requests", "ip", "Top IPs — Writes", color="#ff6b6b", horizontal=True)
     show_df(ip_writes)
+    st.divider()
+
+    # Read / Write Ratio By Tenant
+
+    st.markdown("**Read / write ratio by tenant**")
+    rwr = safe_df(ins.read_write_ratio)
+    bar_chart(rwr, "read_write_ratio", "tenant", "Read / Write Ratio by Tenant", color="#845ef7", horizontal=True)
+    show_df(rwr)
+    st.divider()
+    
+    st.divider()
+
+    st.markdown("**Top response times**")
+    top_rt = safe_df(ins.get_top_responsetime)
+    show_df(top_rt)
+
+    # Object Size Distribution
+
+    st.markdown("**Object size distribution**")
+    osd = safe_df(ins.object_size_distribution)
+    bar_chart(osd, "size_bucket", "requests", "Object Size Distribution", color="#f76707")
+    show_df(osd)
+ 
     #  # Export
     # st.divider()
     # buf = io.BytesIO(); df.head(5000).to_csv(buf, index=False)
@@ -408,6 +432,93 @@ with tabs[1]:
     nat = safe_df(ins.namespace_activity_over_time)
     stacked_area_chart(nat, "hour", "requests", "namespace", "Namespace Activity Over Time")
     show_df(nat)
+    st.divider()
+    # # Peak Traffic Hours
+    # st.markdown("**Peak traffic hours**")
+    # pth = safe_df(ins.peak_traffic_hours)
+    
+    # bar_chart(pth, "hour", "requests", "Peak Traffic Hours", color="#f76707")
+    # show_df(pth)
+    # st.divider()
+    
+    
+    # st.markdown("**Peak traffic hours**")
+    # pth = safe_df(ins.peak_traffic_hours)
+
+    # if not pth.empty and "hour" in pth.columns:
+    #     dt = pd.to_datetime(pth["hour"], errors="coerce")
+    #     pth["hour"] = dt  # keep as datetime for smart tick spacing
+
+    #     fig, ax = plt.subplots(figsize=(12, 4))
+    #     ax.bar(pth["hour"], pth["requests"], color="#f76707", width=0.015)  # width in days
+    #     ax.set_title("Peak Traffic Hours", fontsize=11, fontweight="bold")
+    #     ax.set_xlabel("hour")
+    #     ax.set_ylabel("requests")
+
+    #     # ✅ Show only ~8 ticks regardless of how many bars exist
+    #     ax.xaxis.set_major_locator(mdates.AutoDateLocator(maxticks=8))
+    #     ax.xaxis.set_major_formatter(mdates.DateFormatter("%b %d\n%H:00"))
+
+    #     plt.xticks(fontsize=8)
+    #     plt.tight_layout()
+    #     st.pyplot(fig, use_container_width=True)
+    #     plt.close(fig)
+    # else:
+    #     bar_chart(pth, "hour", "requests", "Peak Traffic Hours", color="#f76707")
+
+    # show_df(pth)
+    # st.divider()
+    
+    st.markdown("**Peak traffic hours**")
+    pth = safe_df(ins.peak_traffic_hours)
+    if not pth.empty and "hour" in pth.columns:
+        dt = pd.to_datetime(pth["hour"], errors="coerce")
+
+        fig = go.Figure(go.Bar(
+            x=dt,
+            y=pth["requests"],
+            marker_color="#f76707",
+            customdata=pth["hour"],
+            hovertemplate=(
+                "<b>%{x|%b %d, %H:%M}</b><br>"
+                "Requests: <b>%{y:,}</b><br>"
+                "Raw: %{customdata}<extra></extra>"
+            )
+        ))
+
+        fig.update_layout(
+            title=dict(text="Peak Traffic Hours", x=0.5, xanchor="center"),
+            xaxis=dict(
+                title="Hour",
+                tickformat="%b %d\n%H:00",
+                nticks=8,
+            ),
+            yaxis=dict(title="Requests"),
+            hoverlabel=dict(bgcolor="white", font_size=12),
+            margin=dict(t=40, b=40, l=40, r=20),
+            height=380,
+            bargap=0.1,
+        )
+
+        fig.update_xaxes(
+            range=[
+                dt.min() - pd.Timedelta(hours=1),
+                dt.max() + pd.Timedelta(hours=1)
+            ]
+        )
+
+        st.plotly_chart(fig, use_container_width=True)
+    else:
+        bar_chart(pth, "hour", "requests", "Peak Traffic Hours", color="#f76707")
+
+    show_df(pth)
+    st.divider()
+
+    # Traffic Trend By Tenant
+    st.markdown("**Traffic trend by tenant (top 10)**")
+    ttt = safe_df(ins.traffic_trend_by_tenant)
+    stacked_area_chart(ttt, "hour", "requests", "tenant", "Traffic Trend by Tenant")
+    show_df(ttt)
 
 # ════════════════════════════════════════════════════
 # TAB 3 · ERRORS (SINGLE COLUMN)
@@ -417,14 +528,14 @@ with tabs[2]:
     
     st.markdown("**Top failed paths**")
     fp = safe_df(ins.get_top_failed_paths)
-    bar_chart(fp, "failures", "path", "Top Failed Paths", color="#e03131", horizontal=True)
+    bar_chart(fp, "path", "failures", "Top Failed Paths", color="#e03131", horizontal=True)
     show_df(fp)
     
     st.divider()
     
     st.markdown("**Top failed tenants**")
     ft = safe_df(ins.get_top_failed_tenants)
-    bar_chart(ft, "failures", "tenant", "Top Failed Tenants", color="#f59f00", horizontal=True)
+    bar_chart(ft, "failures", "count", "Top Failed Tenants", color="#f59f00", horizontal=True)
     show_df(ft)
     
     st.divider()
@@ -437,7 +548,7 @@ with tabs[2]:
     
     st.markdown("**Top failing IPs**")
     fi = safe_df(ins.get_top_failed_ips)
-    bar_chart(fi, "failures", "ip", "Top Failing IPs", color="#ff6b6b", horizontal=True)
+    bar_chart(fi, "count", "failures", "Top Failing IPs", color="#ff6b6b", horizontal=True)
     show_df(fi)
     
     st.divider()
@@ -461,6 +572,16 @@ with tabs[2]:
     
     st.markdown("**5xx errors (latest 100)**")
     show_df(safe_df(ins.get_5xx_errors))
+    
+    
+    # In tabs[2] (Errors tab), after the "Top failing IPs" block:
+
+st.divider()
+
+st.markdown("**Top users with 403 errors**")
+u403 = safe_df(ins.top_403_users)
+bar_chart(u403, "403_count", "user", "Top Users with 403 Errors", color="#e03131", horizontal=True)
+show_df(u403)
 
 # ════════════════════════════════════════════════════
 # TAB 4 · SECURITY (SINGLE COLUMN)
@@ -475,9 +596,9 @@ with tabs[3]:
     
     st.divider()
     
-    st.markdown("**Top 403 users**")
-    u403 = safe_df(ins.top_403_users)
-    show_df(u403)
+    # st.markdown("**Top 403 users**")
+    # u403 = safe_df(ins.top_403_users)
+    # show_df(u403)
     
     st.divider()
     
