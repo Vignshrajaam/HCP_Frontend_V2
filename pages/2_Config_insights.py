@@ -79,10 +79,22 @@ with col_counts:
     c3.metric("Info",      counts["INFO"])
     c4.metric("Healthy",   counts["HEALTHY"])
 
-    st.markdown("""
-    **Score key**  
-    90–100 = Excellent · 75–89 = Good · 50–74 = Fair · 25–49 = Poor · 0–24 = Critical
-    """)
+    st.markdown(
+        """
+        <div style="background:#f8f9fa; border-radius:12px; padding:8px 10px;
+                    border:1px solid #e9ecef; margin-top:10px;">
+            <div style="font-size:14px; font-weight:600; margin-bottom:4px;">Score key</div>
+            <div style="display:flex; gap:20px; font-size:13px;">
+                <span style="color:#2f9e44">🟢 90–100 EXCELLENT</span>
+                <span style="color:#1971c2">🔵 75–89 GOOD</span>
+                <span style="color:#e67700">🟡 50–74 FAIR</span>
+                <span style="color:#e8590c">🟠 25–49 POOR</span>
+                <span style="color:#e03131">🔴 0–24 CRITICAL</span>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
 st.divider()
 
