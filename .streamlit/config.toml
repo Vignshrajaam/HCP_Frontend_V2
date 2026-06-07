@@ -7,6 +7,7 @@ developmentMode = false
 [client]
 showErrorDetails = false
 toolbarMode = "minimal"
+showSidebarNavigation = false
 
 [browser]
 gatherUsageStats = false
